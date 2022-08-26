@@ -9,14 +9,14 @@ function App() {
     <>
       <Divider horizontal />
       <Grid container divided relaxed columns={2} stackable>
-        <Grid.Column width={4}>
+        <Grid.Column width={6}>
           <Segment>
             <Sticky context={contextRef}>
               <NoteMenu />
             </Sticky>
           </Segment>
         </Grid.Column>
-        <Grid.Column width={12}>
+        <Grid.Column width={10}>
           <Segment>
             <NoteViewer />
           </Segment>
