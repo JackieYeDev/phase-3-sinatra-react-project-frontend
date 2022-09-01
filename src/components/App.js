@@ -7,6 +7,8 @@ function App() {
   const contextRef = createRef();
   const [notes, setNotes] = useState([]);
   const [authors, setAuthors] = useState([]);
+  const [activeNote, setActiveNote] = useState([]);
+
   useEffect(() => {
     fetch("http://localhost:9292/notes")
       .then((res) => res.json())
@@ -18,6 +20,12 @@ function App() {
       .catch((err) => console.error(err));
   }, []);
 
+  function handleNoteClick(note) {
+    // setActiveNote(note);
+    console.log("App is called");
+    console.log(note);
+  }
+
   return (
     <>
       <Divider horizontal />
@@ -25,13 +33,17 @@ function App() {
         <Grid.Column width={6}>
           <Segment>
             <Sticky context={contextRef}>
-              <NoteMenu authors={authors} notes={notes} />
+              <NoteMenu
+                authors={authors}
+                notes={notes}
+                handleNoteClick={handleNoteClick}
+              />
             </Sticky>
           </Segment>
         </Grid.Column>
         <Grid.Column width={10}>
           <Segment>
-            <NoteViewer />
+            <NoteViewer activeNote={activeNote} />
           </Segment>
         </Grid.Column>
       </Grid>
