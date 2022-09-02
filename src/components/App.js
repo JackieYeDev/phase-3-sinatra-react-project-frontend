@@ -7,7 +7,7 @@ function App() {
   const contextRef = createRef();
   const [notes, setNotes] = useState([]);
   const [authors, setAuthors] = useState([]);
-  const [activeNote, setActiveNote] = useState([]);
+  const [activeNote, setActiveNote] = useState({});
 
   useEffect(() => {
     fetch("http://localhost:9292/notes")
@@ -21,9 +21,7 @@ function App() {
   }, []);
 
   function handleNoteClick(note) {
-    // setActiveNote(note);
-    console.log("App is called");
-    console.log(note);
+    setActiveNote({ ...note });
   }
 
   return (

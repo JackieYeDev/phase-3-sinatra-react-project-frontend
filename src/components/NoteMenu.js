@@ -3,21 +3,9 @@ import UserSelect from "./UserSelect";
 import { Button, Image, Input, Loader, Menu } from "semantic-ui-react";
 
 function NoteMenu(props) {
-  const [activeNote, setActiveNote] = useState("");
-
-  // const handleItemClick = (e, { name }) => {
-  //   setActiveNote(name);
-  //   console.log(e);
-  // };
-
-  const handleItemClick = (note) => {
-    console.log("NoteMenu is called");
-    props.handleNoteClick(note);
-  };
-
   return (
     <Menu vertical fluid>
-      <Menu.Item onClick={handleItemClick}>Notes App</Menu.Item>
+      <Menu.Item>Notes App</Menu.Item>
       <Menu.Item>
         <UserSelect authors={props.authors} />
         <Button attached={"bottom"}>Load</Button>
@@ -33,7 +21,10 @@ function NoteMenu(props) {
             (author) => author.id == note.author_id
           );
           return (
-            <Menu.Item key={note.id} onClick={() => handleItemClick(note)}>
+            <Menu.Item
+              key={note.id}
+              onClick={() => props.handleNoteClick({ ...note })}
+            >
               {authorName ? authorName.name : "No Author"} - {note.title}
             </Menu.Item>
           );

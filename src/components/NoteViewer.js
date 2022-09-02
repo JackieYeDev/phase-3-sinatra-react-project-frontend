@@ -7,7 +7,7 @@ function NoteViewer(props) {
         <label>Author</label>
         <input
           placeholder="Note Author"
-          value={props.activeNote ? props.activeNote.author : ""}
+          value={props.activeNote ? props.activeNote.author_id : ""}
         />
       </Form.Field>
       <Form.Field>
