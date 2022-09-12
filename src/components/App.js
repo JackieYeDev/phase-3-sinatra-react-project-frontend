@@ -1,7 +1,7 @@
 import React, { createRef, useEffect, useState } from "react";
 import NoteViewer from "./NoteViewer";
 import NoteMenu from "./NoteMenu";
-import { Divider, Grid, Segment, Sticky } from "semantic-ui-react";
+import { Button, Divider, Grid, Segment, Sticky } from "semantic-ui-react";
 
 function App() {
   const contextRef = createRef();
@@ -24,6 +24,12 @@ function App() {
     setActiveNote({ ...note });
   }
 
+  // const filteredNotes = notes.findAll((note) => note.author_id == );
+
+  const activeAuthor = authors.find(
+    (author) => author.id == activeNote.author_id
+  );
+
   return (
     <>
       <Divider horizontal />
@@ -36,12 +42,13 @@ function App() {
                 notes={notes}
                 handleNoteClick={handleNoteClick}
               />
+              <Button color={"green"}>New Note</Button>
             </Sticky>
           </Segment>
         </Grid.Column>
         <Grid.Column width={10}>
           <Segment>
-            <NoteViewer activeNote={activeNote} />
+            <NoteViewer activeNote={activeNote} author={activeAuthor} />
           </Segment>
         </Grid.Column>
       </Grid>

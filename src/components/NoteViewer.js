@@ -4,10 +4,17 @@ function NoteViewer(props) {
   return (
     <Form>
       <Form.Field>
-        <label>Author</label>
+        <label>Author ID</label>
+        <input
+          placeholder="Author ID"
+          value={props.activeNote ? props.activeNote.author_id : ""}
+        />
+      </Form.Field>
+      <Form.Field>
+        <label>Author Name</label>
         <input
           placeholder="Note Author"
-          value={props.activeNote ? props.activeNote.author_id : ""}
+          value={props.author ? props.author.name : ""}
         />
       </Form.Field>
       <Form.Field>

@@ -3,20 +3,51 @@ import UserSelect from "./UserSelect";
 import { Button, Image, Input, Loader, Menu } from "semantic-ui-react";
 
 function NoteMenu(props) {
+  const [selectedUser, setSelectedUser] = useState("");
+  const [searchString, setSearchString] = useState("");
+  function handleUserSelect(event, data) {
+    const value = data.value;
+    setSelectedUser(value);
+  }
+
+  function clearFilterParams() {
+    setSearchString("");
+    setSelectedUser("");
+  }
+
+  const filteredNotes = props.notes
+    .filter((note) =>
+      selectedUser == "" ? true : note.author_id == selectedUser
+    )
+    .filter((note) =>
+      searchString == "" ? true : note.title.includes(searchString)
+    );
   return (
     <Menu vertical fluid>
       <Menu.Item>Notes App</Menu.Item>
       <Menu.Item>
-        <UserSelect authors={props.authors} />
-        <Button attached={"bottom"}>Load</Button>
+        <UserSelect
+          authors={props.authors}
+          handleUserSelect={handleUserSelect}
+        />
       </Menu.Item>
       <Menu.Item>
-        <Input placeholder={"Search by title"}></Input>
-        <Button attached={"bottom"}>Search</Button>
+        <Input
+          placeholder={"Search by title"}
+          value={searchString}
+          onChange={(event) => {
+            setSearchString(event.target.value);
+          }}
+        ></Input>
+      </Menu.Item>
+      <Menu.Item>
+        <Button fluid={"true"} onClick={clearFilterParams}>
+          Clear Filters
+        </Button>
       </Menu.Item>
 
       {props.notes ? (
-        props.notes.map((note) => {
+        filteredNotes.map((note) => {
           const authorName = props.authors.find(
             (author) => author.id == note.author_id
           );
