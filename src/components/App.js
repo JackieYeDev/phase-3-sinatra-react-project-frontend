@@ -72,7 +72,9 @@ function App() {
               </>
             )}
             {selection === "NewNote" && <NewNote />}
-            {selection === "NewAuthor" && <NewAuthor />}
+            {selection === "NewAuthor" && (
+              <NewAuthor authors={authors} setAuthors={setAuthors} />
+            )}
             {selection === "ActiveNote" && (
               <NoteViewer activeNote={activeNote} author={activeAuthor} />
             )}
