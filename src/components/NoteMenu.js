@@ -4,24 +4,18 @@ import { Button, Image, Input, Loader, Menu } from "semantic-ui-react";
 
 function NoteMenu(props) {
   const [selectedUser, setSelectedUser] = useState("");
-  const [searchString, setSearchString] = useState("");
   function handleUserSelect(event, data) {
     const value = data.value;
     setSelectedUser(value);
   }
 
   function clearFilterParams() {
-    setSearchString("");
     setSelectedUser("");
   }
 
-  const filteredNotes = props.notes
-    .filter((note) =>
-      selectedUser == "" ? true : note.author_id == selectedUser
-    )
-    .filter((note) =>
-      searchString == "" ? true : note.title.includes(searchString)
-    );
+  const filteredNotes = props.notes.filter((note) =>
+    selectedUser == "" ? true : note.author_id == selectedUser
+  );
   return (
     <Menu vertical fluid>
       <Menu.Item>Notes App</Menu.Item>
@@ -30,15 +24,6 @@ function NoteMenu(props) {
           authors={props.authors}
           handleUserSelect={handleUserSelect}
         />
-      </Menu.Item>
-      <Menu.Item>
-        <Input
-          placeholder={"Search by title"}
-          value={searchString}
-          onChange={(event) => {
-            setSearchString(event.target.value);
-          }}
-        ></Input>
       </Menu.Item>
       <Menu.Item>
         <Button fluid={"true"} onClick={clearFilterParams}>

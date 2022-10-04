@@ -43,6 +43,7 @@ function App() {
                 handleNoteClick={handleNoteClick}
               />
               <Button color={"green"}>New Note</Button>
+              <Button color={"green"}>New Author</Button>
             </Sticky>
           </Segment>
         </Grid.Column>

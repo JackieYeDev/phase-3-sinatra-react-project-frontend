@@ -31,8 +31,8 @@ function NoteViewer(props) {
           value={props.activeNote ? props.activeNote.content : ""}
         ></TextArea>
       </Form.Field>
-      <Button>Save</Button>
-      <Button>Cancel</Button>
+      <Button color={"green"}>Save</Button>
+      <Button color={"red"}>Delete</Button>
     </Form>
   );
 }
