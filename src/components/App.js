@@ -1,13 +1,24 @@
 import React, { createRef, useEffect, useState } from "react";
 import NoteViewer from "./NoteViewer";
 import NoteMenu from "./NoteMenu";
-import { Button, Divider, Grid, Segment, Sticky } from "semantic-ui-react";
+import {
+  Button,
+  Divider,
+  Grid,
+  Image,
+  Loader,
+  Segment,
+  Sticky,
+} from "semantic-ui-react";
+import NewAuthor from "./NewAuthor";
+import NewNote from "./NewNote";
 
 function App() {
   const contextRef = createRef();
   const [notes, setNotes] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [activeNote, setActiveNote] = useState({});
+  const [selection, setSelection] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:9292/notes")
@@ -21,6 +32,7 @@ function App() {
   }, []);
 
   function handleNoteClick(note) {
+    setSelection("ActiveNote");
     setActiveNote({ ...note });
   }
 
@@ -42,14 +54,28 @@ function App() {
                 notes={notes}
                 handleNoteClick={handleNoteClick}
               />
-              <Button color={"green"}>New Note</Button>
-              <Button color={"green"}>New Author</Button>
+              <Button color={"green"} onClick={() => setSelection("NewNote")}>
+                New Note
+              </Button>
+              <Button color={"green"} onClick={() => setSelection("NewAuthor")}>
+                New Author
+              </Button>
             </Sticky>
           </Segment>
         </Grid.Column>
         <Grid.Column width={10}>
           <Segment>
-            <NoteViewer activeNote={activeNote} author={activeAuthor} />
+            {selection === "" && (
+              <>
+                <Loader active />
+                <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
+              </>
+            )}
+            {selection === "NewNote" && <NewNote />}
+            {selection === "NewAuthor" && <NewAuthor />}
+            {selection === "ActiveNote" && (
+              <NoteViewer activeNote={activeNote} author={activeAuthor} />
+            )}
           </Segment>
         </Grid.Column>
       </Grid>

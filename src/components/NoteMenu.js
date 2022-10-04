@@ -16,6 +16,7 @@ function NoteMenu(props) {
   const filteredNotes = props.notes.filter((note) =>
     selectedUser == "" ? true : note.author_id == selectedUser
   );
+
   return (
     <Menu vertical fluid>
       <Menu.Item>Notes App</Menu.Item>
