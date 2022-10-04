@@ -9,10 +9,6 @@ function NoteMenu(props) {
     setSelectedUser(value);
   }
 
-  function clearFilterParams() {
-    setSelectedUser("");
-  }
-
   const filteredNotes = props.notes.filter((note) =>
     selectedUser == "" ? true : note.author_id == selectedUser
   );
@@ -25,11 +21,6 @@ function NoteMenu(props) {
           authors={props.authors}
           handleUserSelect={handleUserSelect}
         />
-      </Menu.Item>
-      <Menu.Item>
-        <Button fluid={"true"} onClick={clearFilterParams}>
-          Clear Filters
-        </Button>
       </Menu.Item>
 
       {props.notes ? (
