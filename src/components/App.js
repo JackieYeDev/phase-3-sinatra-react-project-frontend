@@ -7,24 +7,22 @@ import {
   Grid,
   Image,
   Loader,
+  Menu,
   Segment,
   Sticky,
 } from "semantic-ui-react";
 import NewAuthor from "./NewAuthor";
 import NewNote from "./NewNote";
+import UserSelect from "./UserSelect";
 
 function App() {
-  const contextRef = createRef();
   const [notes, setNotes] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [activeNote, setActiveNote] = useState({});
   const [selection, setSelection] = useState("");
+  const [selectedUser, setSelectedUser] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:9292/notes")
-      .then((res) => res.json())
-      .then((notes) => setNotes(notes))
-      .catch((err) => console.error(err));
     fetch("http://localhost:9292/authors")
       .then((res) => res.json())
       .then((authors) => setAuthors(authors))
@@ -34,6 +32,26 @@ function App() {
   function handleNoteClick(note) {
     setSelection("ActiveNote");
     setActiveNote({ ...note });
+  }
+
+  function handleUserSelect(event, data) {
+    const value = data.value; // User ID
+    setSelectedUser(value);
+    fetch(`http://localhost:9292/authors/${value}`)
+      .then((res) => res.json())
+      .then((data) => setNotes(data.notes))
+      .catch((err) => console.error(err));
+  }
+
+  function deleteAuthor() {
+    fetch(`http://localhost:9292/authors/${selectedUser}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((author) => {
+        const updatedList = authors.filter((a) => a.id !== author.id);
+        setAuthors(updatedList);
+      });
   }
 
   // const filteredNotes = notes.findAll((note) => note.author_id == );
@@ -48,19 +66,30 @@ function App() {
       <Grid container divided relaxed columns={2} stackable>
         <Grid.Column width={6}>
           <Segment>
-            <Sticky context={contextRef}>
+            <Menu vertical fluid>
+              <Menu.Item>Notes App</Menu.Item>
+
+              <Menu.Item>
+                <UserSelect
+                  authors={authors}
+                  handleUserSelect={handleUserSelect}
+                />
+              </Menu.Item>
               <NoteMenu
                 authors={authors}
                 notes={notes}
                 handleNoteClick={handleNoteClick}
               />
-              <Button color={"green"} onClick={() => setSelection("NewNote")}>
-                New Note
-              </Button>
-              <Button color={"green"} onClick={() => setSelection("NewAuthor")}>
-                New Author
-              </Button>
-            </Sticky>
+            </Menu>
+            <Button color={"green"} onClick={() => setSelection("NewNote")}>
+              New Note
+            </Button>
+            <Button color={"green"} onClick={() => setSelection("NewAuthor")}>
+              New Author
+            </Button>
+            <Button color={"red"} onClick={() => deleteAuthor()}>
+              Delete User
+            </Button>
           </Segment>
         </Grid.Column>
         <Grid.Column width={10}>
@@ -71,7 +100,7 @@ function App() {
                 <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
               </>
             )}
-            {selection === "NewNote" && <NewNote />}
+            {selection === "NewNote" && <NewNote authors={authors} />}
             {selection === "NewAuthor" && (
               <NewAuthor authors={authors} setAuthors={setAuthors} />
             )}

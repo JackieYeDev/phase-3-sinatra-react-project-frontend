@@ -5,7 +5,7 @@ function UserSelect(props) {
   return (
     <Select
       onChange={props.handleUserSelect}
-      placeholder="Filter an existing user"
+      placeholder="Select an existing user to view notes or delete"
       options={[
         { key: "default", value: "", text: "" },
         ...props.authors.map((author, index) => ({

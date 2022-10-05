@@ -5,7 +5,7 @@ import { Button, Image, Input, Loader, Menu } from "semantic-ui-react";
 function NoteMenu(props) {
   const [selectedUser, setSelectedUser] = useState("");
   function handleUserSelect(event, data) {
-    const value = data.value;
+    const value = data.value; // User ID
     setSelectedUser(value);
   }
 
@@ -14,15 +14,7 @@ function NoteMenu(props) {
   );
 
   return (
-    <Menu vertical fluid>
-      <Menu.Item>Notes App</Menu.Item>
-      <Menu.Item>
-        <UserSelect
-          authors={props.authors}
-          handleUserSelect={handleUserSelect}
-        />
-      </Menu.Item>
-
+    <>
       {props.notes ? (
         filteredNotes.map((note) => {
           const authorName = props.authors.find(
@@ -44,7 +36,7 @@ function NoteMenu(props) {
           <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
         </Menu.Item>
       )}
-    </Menu>
+    </>
   );
 }
 
