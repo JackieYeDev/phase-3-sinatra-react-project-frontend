@@ -26,14 +26,14 @@ function NewNote(props) {
       }),
     })
       .then((res) => res.json())
-      .then(() => console.log("Note Successfully Created"))
+      .then((note) => props.handleNewNote(note))
       .catch((err) => console.log(err));
   }
   return (
     <Form onSubmit={handleCreateNote}>
       <Form.Field>
         <label>Author ID</label>
-        <input placeholder="Author ID" disabled={"true"} value={formData.id} />
+        <input placeholder="Author ID" disabled value={formData.id} />
       </Form.Field>
       <Form.Field>
         <label>Author Name</label>

@@ -29,10 +29,6 @@ function App() {
       .catch((err) => console.error(err));
   }, []);
 
-  useEffect(() => {
-    console.log(activeNote);
-  }, [activeNote]);
-
   function handleNoteClick(note) {
     setSelection("ActiveNote");
     setActiveNote({ ...note });
@@ -49,6 +45,11 @@ function App() {
       .then((res) => res.json())
       .then((data) => setNotes(data.notes))
       .catch((err) => console.error(err));
+  }
+  function handleNewNote(newNote) {
+    setNotes([...notes, newNote]);
+    setSelection("ActiveNote");
+    setActiveNote(newNote);
   }
 
   function handleNoteUpdate(updatedNote) {
@@ -122,7 +123,9 @@ function App() {
                 <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
               </>
             )}
-            {selection === "NewNote" && <NewNote authors={authors} />}
+            {selection === "NewNote" && (
+              <NewNote authors={authors} handleNewNote={handleNewNote} />
+            )}
             {selection === "NewAuthor" && (
               <NewAuthor authors={authors} setAuthors={setAuthors} />
             )}
