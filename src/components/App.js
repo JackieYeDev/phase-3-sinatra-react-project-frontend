@@ -29,6 +29,10 @@ function App() {
       .catch((err) => console.error(err));
   }, []);
 
+  useEffect(() => {
+    console.log(activeNote);
+  }, [activeNote]);
+
   function handleNoteClick(note) {
     setSelection("ActiveNote");
     setActiveNote({ ...note });
@@ -37,10 +41,21 @@ function App() {
   function handleUserSelect(event, data) {
     const value = data.value; // User ID
     setSelectedUser(value);
+    if (value == false) {
+      setNotes([]);
+      return null;
+    }
     fetch(`http://localhost:9292/authors/${value}`)
       .then((res) => res.json())
       .then((data) => setNotes(data.notes))
       .catch((err) => console.error(err));
+  }
+
+  function handleNoteUpdate(updatedNote) {
+    const updatedNoteList = notes.map((note) =>
+      note.id == updatedNote.id ? updatedNote : note
+    );
+    setNotes(updatedNoteList);
   }
 
   function deleteAuthor() {
@@ -53,9 +68,16 @@ function App() {
         setAuthors(updatedList);
       });
   }
-
-  // const filteredNotes = notes.findAll((note) => note.author_id == );
-
+  function deleteNote() {
+    fetch(`http://localhost:9292/notes/${activeNote.id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((notes) => {
+        const updatedList = notes.filter((n) => n.id !== n.id);
+        setAuthors(updatedList);
+      });
+  }
   const activeAuthor = authors.find(
     (author) => author.id == activeNote.author_id
   );
@@ -105,7 +127,11 @@ function App() {
               <NewAuthor authors={authors} setAuthors={setAuthors} />
             )}
             {selection === "ActiveNote" && (
-              <NoteViewer activeNote={activeNote} author={activeAuthor} />
+              <NoteViewer
+                activeNote={activeNote}
+                author={activeAuthor}
+                handleNoteUpdate={handleNoteUpdate}
+              />
             )}
           </Segment>
         </Grid.Column>
