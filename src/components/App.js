@@ -59,6 +59,7 @@ function App() {
       note.id == updatedNote.id ? updatedNote : note
     );
     setNotes(updatedNoteList);
+    setActiveNote(updatedNote);
   }
 
   function deleteAuthor() {
