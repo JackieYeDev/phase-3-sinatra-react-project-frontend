@@ -35,7 +35,7 @@ function NoteViewer(props) {
       .catch((err) => console.error(err));
   }
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form>
       <Form.Field>
         <label>Author ID</label>
         <input placeholder="Author ID" value={formData.author_id} disabled />
@@ -64,8 +64,12 @@ function NoteViewer(props) {
           }}
         ></TextArea>
       </Form.Field>
-      <Button color={"green"}>Save</Button>
-      <Button color={"red"}>Delete</Button>
+      <Button color={"green"} onClick={handleSubmit}>
+        Save
+      </Button>
+      <Button color={"red"} onClick={props.handleNoteDelete}>
+        Delete
+      </Button>
     </Form>
   );
 }

@@ -47,7 +47,9 @@ function App() {
       .catch((err) => console.error(err));
   }
   function handleNewNote(newNote) {
-    setNotes([...notes, newNote]);
+    if (newNote.author_id == selectedUser) {
+      setNotes([...notes, newNote]);
+    }
     setSelection("ActiveNote");
     setActiveNote(newNote);
   }
@@ -67,17 +69,21 @@ function App() {
       .then((author) => {
         const updatedList = authors.filter((a) => a.id !== author.id);
         setAuthors(updatedList);
-      });
+      })
+      .finally(() => setNotes([]))
+      .catch((err) => console.error(err));
   }
-  function deleteNote() {
+  function handleNoteDelete() {
     fetch(`http://localhost:9292/notes/${activeNote.id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
-      .then((notes) => {
-        const updatedList = notes.filter((n) => n.id !== n.id);
-        setAuthors(updatedList);
-      });
+      .then((note) => {
+        const updatedList = notes.filter((n) => n.id !== note.id);
+        setNotes(updatedList);
+      })
+      .finally(() => setSelection(""))
+      .catch((err) => console.error(err));
   }
   const activeAuthor = authors.find(
     (author) => author.id == activeNote.author_id
@@ -134,6 +140,7 @@ function App() {
                 activeNote={activeNote}
                 author={activeAuthor}
                 handleNoteUpdate={handleNoteUpdate}
+                handleNoteDelete={handleNoteDelete}
               />
             )}
           </Segment>
