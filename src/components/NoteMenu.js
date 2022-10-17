@@ -9,14 +9,10 @@ function NoteMenu(props) {
     setSelectedUser(value);
   }
 
-  const filteredNotes = props.notes.filter((note) =>
-    selectedUser == "" ? true : note.author_id == selectedUser
-  );
-
   return (
     <>
       {props.notes ? (
-        filteredNotes.map((note) => {
+        props.notes.map((note) => {
           const authorName = props.authors.find(
             (author) => author.id == note.author_id
           );
