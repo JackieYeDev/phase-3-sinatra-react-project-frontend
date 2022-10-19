@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NoteViewer from "./NoteViewer";
 import NoteMenu from "./NoteMenu";
 import {
@@ -9,7 +9,6 @@ import {
   Loader,
   Menu,
   Segment,
-  Sticky,
 } from "semantic-ui-react";
 import NewAuthor from "./NewAuthor";
 import NewNote from "./NewNote";
@@ -21,6 +20,7 @@ function App() {
   const [activeNote, setActiveNote] = useState({});
   const [selection, setSelection] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
+  const [selectedAuthor, setSelectedAuthor] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:9292/authors")
@@ -43,7 +43,10 @@ function App() {
     }
     fetch(`http://localhost:9292/authors/${value}`)
       .then((res) => res.json())
-      .then((data) => setNotes(data.notes))
+      .then((data) => {
+        setNotes(data.notes);
+        setSelectedAuthor(data.name);
+      })
       .catch((err) => console.error(err));
   }
   function handleNewNote(newNote) {
@@ -71,7 +74,13 @@ function App() {
         const updatedList = authors.filter((a) => a.id !== author.id);
         setAuthors(updatedList);
       })
-      .finally(() => setNotes([]))
+      .finally(() => {
+        setNotes([]);
+
+        // @TODO
+        // Remove ActiveNote if note is associated with Deleted User
+        setActiveNote({});
+      })
       .catch((err) => console.error(err));
   }
   function handleNoteDelete() {
@@ -106,7 +115,7 @@ function App() {
                 />
               </Menu.Item>
               <NoteMenu
-                authors={authors}
+                author={selectedAuthor}
                 notes={notes}
                 handleNoteClick={handleNoteClick}
               />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, TextArea } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 
 function NewAuthor(props) {
   const [formData, setFormData] = useState({ authorName: "" });
